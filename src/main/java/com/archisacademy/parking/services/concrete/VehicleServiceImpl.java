@@ -59,7 +59,7 @@ public class VehicleServiceImpl implements VehicleService {
         
         vehicleRepository.delete(vehicle);
         
-        return new ApiResponse<>(true,"Vehicle deleted successfully.", null);
+        return new ApiResponse<>(true,"Vehicle deleted successfully.");
     }
 
     @Override
