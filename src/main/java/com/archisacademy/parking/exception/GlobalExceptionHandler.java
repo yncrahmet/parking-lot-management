@@ -1,6 +1,8 @@
 package com.archisacademy.parking.exception;
 
 import com.archisacademy.parking.ApiResponse.ApiResponse;
+import com.archisacademy.parking.exception.user.UserExistByEmailException;
+import com.archisacademy.parking.exception.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -44,6 +46,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(VehicleNotFoundException.class)
     public ResponseEntity<ApiResponse<?>> handleVehicleNotFound(VehicleNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse<>(false, ex.getMessage()));
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiResponse<?>> handleUserNotFound(UserNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse<>(false, ex.getMessage()));
+    }
+
+    @ExceptionHandler(UserExistByEmailException.class)
+    public ResponseEntity<ApiResponse<?>> handleUserExistByEmail(UserExistByEmailException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ApiResponse<>(false, ex.getMessage()));
     }
 

@@ -1,4 +1,4 @@
-package com.archisacademy.parking.ModelMappper;
+package com.archisacademy.parking.modelmapper;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
