@@ -1,7 +1,7 @@
 package com.archisacademy.parking.services.concrete;
 
 import com.archisacademy.parking.ApiResponse.ApiResponse;
-import com.archisacademy.parking.ModelMappper.ModelMapperService;
+import com.archisacademy.parking.modelmapper.ModelMapperService;
 import com.archisacademy.parking.dtos.request.VehicleRequest;
 import com.archisacademy.parking.dtos.request.VehicleUpdateRequest;
 import com.archisacademy.parking.dtos.response.VehicleResponse;
