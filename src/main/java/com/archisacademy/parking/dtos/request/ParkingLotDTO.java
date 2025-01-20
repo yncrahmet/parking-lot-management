@@ -14,6 +14,7 @@ public abstract class ParkingLotDTO {
 
     private String location;
 
+
     private Long totalCapacity;
 
 
