@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/users")
+@Tag(name = "User", description = "This tag encompasses all the API endpoints related to user management. It provides functionality for creating, reading, updating, and deleting users. It includes endpoints for saving a new user, retrieving a list of all existing users, updating an existing user, and deleting an existing user. The endpoints are documented using Swagger annotations to provide clear and concise descriptions of their purpose and expected responses.")
 public class UserController {
     private final UserService userService;
 
