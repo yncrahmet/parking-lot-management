@@ -5,23 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "parking_lot")
-public class ParkingLot {
-
+@NoArgsConstructor
+@Entity
+@Table(name = "park_floor")
+public class ParkFloor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    private int floor;
+    private int capacity;
+    private String floorBlock;
 
-    private String parkingLotName;
-
-    private String location;
-
-    private Long totalCapasity;
-
-
+    @OneToOne
+    private ParkingLot parkingLot;
 }
