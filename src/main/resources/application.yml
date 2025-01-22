@@ -1,5 +1,5 @@
-server :
-  port : 8080
+server:
+  port: 8080
 
 spring:
   application:
@@ -9,13 +9,16 @@ spring:
     url: jdbc:postgresql://localhost:5432/parking
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: 12345
+    password: 1234
 
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-
     hibernate:
       ddl-auto: update
       show-sql: true
+
+logging:
+  file:
+    name: C:/Users/bsevi/Desktop/Java-Örneklendirme/Microservice-backend-parking-1/logs/application.log
