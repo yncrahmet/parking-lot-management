@@ -20,8 +20,8 @@ public class User {
     @Schema(name = "Name", example = "John Doe", required = true, nullable = false)
     private String name;
 
-    @Column(name = "user_name",nullable = false)
     @Schema(name = "Username", example = "johndoe", required = true, nullable = false)
+    @Column(name = "username",nullable = false)
     private String username;
 
     @Column(name = "password")

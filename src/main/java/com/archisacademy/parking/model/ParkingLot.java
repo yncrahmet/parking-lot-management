@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "parking_lot")
+@Table(name = "parking_lots")
 public class ParkingLot {
 
     @Id
@@ -22,6 +22,5 @@ public class ParkingLot {
     private String location;
 
     private Long totalCapasity;
-
 
 }
