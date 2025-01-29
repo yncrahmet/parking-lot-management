@@ -1,4 +1,21 @@
 package com.archisacademy.parking.services.abstracts;
 
+import com.archisacademy.parking.dtos.request.ParkingSpotRequest;
+import com.archisacademy.parking.dtos.request.ParkingSpotUpdateRequest;
+import com.archisacademy.parking.dtos.response.ParkingSpotResponse;
+import com.archisacademy.parking.dtos.response.ParkingSpotUpdateResponse;
+import com.archisacademy.parking.model.ParkingSpot;
+
+import java.util.List;
+
 public interface ParkingSpotService {
+    ParkingSpotResponse createParkingSpot(ParkingSpotRequest parkingSpotRequest);
+
+    ParkingSpot getParkingSpotById(Long id);
+
+    ParkingSpotUpdateResponse updateResponse(Long id, ParkingSpotUpdateRequest parkingSpotUpdateRequest);
+
+    String deleteSpot(Long id);
+
+    List<ParkingSpot> listSpots();
 }
