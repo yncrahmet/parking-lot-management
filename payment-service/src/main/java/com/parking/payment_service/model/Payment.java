@@ -32,9 +32,15 @@ public class Payment {
     @Schema(name = "Payment Method", example = "Credit Card", required = true, nullable = false)
     private String paymentMethod;
 
+    @Enumerated(EnumType.STRING) // Use EnumType.ORDINAL if you prefer ordinal values
     @Column(name = "payment_status", nullable = false)
-    @Schema(name = "Payment Status", example = "Paid", required = true, nullable = false)
-    private String paymentStatus;
+    @Schema(name = "Payment Status", example = "PAID", required = true, nullable = false)
+    private PaymentStatus paymentStatus;
 
-
+    public enum PaymentStatus {
+        PENDING,
+        PAID,
+        FAILED,
+        REFUNDED
+    }
 }

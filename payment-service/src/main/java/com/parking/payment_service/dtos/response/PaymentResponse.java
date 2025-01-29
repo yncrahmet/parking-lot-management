@@ -1,12 +1,12 @@
 package com.parking.payment_service.dtos.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.parking.payment_service.model.Payment;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentResponse {
@@ -14,6 +14,6 @@ public class PaymentResponse {
     private Long reservationId;
     private Double amount;
     private String paymentMethod;
-    private String paymentStatus;
+    private Payment.PaymentStatus paymentStatus;
     private LocalDateTime timestamp;
 }

@@ -1,5 +1,6 @@
 package com.parking.payment_service.dtos.request;
 
+import com.parking.payment_service.model.Payment;
 import lombok.*;
 
 
@@ -9,5 +10,5 @@ import lombok.*;
 @Setter
 public class PaymentUpdateRequest {
     private String paymentMethod;
-    private String paymentStatus;
+    private Payment.PaymentStatus paymentStatus;
 }

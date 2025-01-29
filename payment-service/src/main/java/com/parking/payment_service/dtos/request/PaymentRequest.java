@@ -1,5 +1,6 @@
 package com.parking.payment_service.dtos.request;
 
+import com.parking.payment_service.model.Payment;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -22,7 +23,6 @@ public class PaymentRequest {
     private String paymentMethod;
 
     @NotNull(message = "Payment status cannot be null")
-    @Size(min = 1, message = "Payment status cannot be empty")
-    private String paymentStatus;
+    private Payment.PaymentStatus paymentStatus;
 
 }

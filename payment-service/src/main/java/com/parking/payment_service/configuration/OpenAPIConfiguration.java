@@ -14,11 +14,11 @@ import java.util.List;
 @Configuration
 public class OpenAPIConfiguration {
 
-    // http://localhost:8080/swagger-ui/index.html#/
+    // http://localhost:8082/swagger-ui/index.html#/
     @Bean
     public OpenAPI defineOpenApi() {
         Server server = new Server();
-        server.setUrl("http://localhost:8080");
+        server.setUrl("http://localhost:8082");
 
 
         License license = new License();
@@ -31,10 +31,10 @@ public class OpenAPIConfiguration {
         contact.setEmail("mm.fatihsimsek@gmail.com");
 
         Info info = new Info()
-                .title("Parking Management API")
+                .title("Payment Service API")
                 .version("1.0.0")
-                .description("API for managing parking spaces and reservations.")
-                .termsOfService("https://parking.com/terms")
+                .description("API for managing payments.")
+                .termsOfService("https://parking-management.com/payment/terms")
                 .license(license)
                 .contact(contact);
 
