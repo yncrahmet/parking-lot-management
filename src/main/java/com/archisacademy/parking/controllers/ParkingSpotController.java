@@ -49,7 +49,7 @@ public class ParkingSpotController {
                     .body("Parking spot not found with id:" +id);
         }
     }
-
+    //list parkimh spots
     @GetMapping("/parking-spots")
     public ResponseEntity<List<ParkingSpot>> listSpots(){
         List<ParkingSpot> parkingSpots = parkingSpotService.listSpots();
