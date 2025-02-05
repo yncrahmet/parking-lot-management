@@ -2,8 +2,10 @@ package com.archisacademy.parking.controllers;
 
 import com.archisacademy.parking.dtos.request.UserRequest;
 import com.archisacademy.parking.dtos.request.UserUpdateRequest;
+import com.archisacademy.parking.dtos.response.BookingHistoryResponse;
 import com.archisacademy.parking.dtos.response.UserResponse;
 import com.archisacademy.parking.dtos.response.UserUpdateResponse;
+import com.archisacademy.parking.services.abstracts.BookingService;
 import com.archisacademy.parking.services.abstracts.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,9 +24,11 @@ import java.util.List;
 @Tag(name = "User", description = "This tag encompasses all the API endpoints related to user management. It provides functionality for creating, reading, updating, and deleting users. It includes endpoints for saving a new user, retrieving a list of all existing users, updating an existing user, and deleting an existing user. The endpoints are documented using Swagger annotations to provide clear and concise descriptions of their purpose and expected responses.")
 public class UserController {
     private final UserService userService;
+    private final BookingService bookingService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, BookingService bookingService) {
         this.userService = userService;
+        this.bookingService = bookingService;
     }
 
     @PostMapping(value = "/save")
@@ -74,5 +78,11 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/booking-history")
+    public ResponseEntity<List<BookingHistoryResponse>>getBookingHistory(@PathVariable Long id){
+        List<BookingHistoryResponse> bookingHistory =  bookingService.userBookings(id);
+        return ResponseEntity.ok(bookingHistory);
     }
 }
