@@ -22,7 +22,7 @@ public class ParkingSpot {
     private String parkingSpotType;
 
     @Column(name = "is_spot_available", updatable = true)
-    private Boolean parkingSpotAvailability = true;
+    private Boolean availability = true;
 
     @Column(name = "parking_spot_location", nullable = false, updatable = false)
     private String parkingSpotLocation;
