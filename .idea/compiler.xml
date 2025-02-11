@@ -7,10 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="eureka-server" />
         <module name="payment-service" />
         <module name="parking-reservation" />
       </profile>
-      <profile name="Annotation profile for email-service" enabled="true">
+      <profile name="Annotation profile for Microservice-backend-parking-1" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -23,10 +24,12 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="parking-reservation (1)" target="17" />
+      <module name="untitled" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Microservice-backend-parking-1" options="-parameters" />
       <module name="email-service" options="-parameters" />
       <module name="parking" options="-parameters" />
       <module name="parking-reservation" options="-parameters" />
