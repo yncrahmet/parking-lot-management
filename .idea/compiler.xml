@@ -19,6 +19,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
         </processorPath>
         <module name="parking" />
+        <module name="email-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -29,6 +30,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Microservice-backend-parking-1" options="-parameters" />
+      <module name="email-service" options="-parameters" />
       <module name="parking" options="-parameters" />
       <module name="parking-reservation" options="-parameters" />
       <module name="parking-reservation (1)" options="-parameters" />
