@@ -2,6 +2,7 @@ package com.archisacademy.parking.services.concrete;
 
 import com.archisacademy.parking.dtos.request.ParkingSpotRequest;
 import com.archisacademy.parking.dtos.request.ParkingSpotUpdateRequest;
+import com.archisacademy.parking.dtos.response.ParkingSpotAvailabilityResponse;
 import com.archisacademy.parking.dtos.response.ParkingSpotResponse;
 import com.archisacademy.parking.dtos.response.ParkingSpotUpdateResponse;
 import com.archisacademy.parking.model.ParkingSpot;
@@ -59,4 +60,9 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
        return parkingSpotRepository.findAll();
     }
 
+   @Override
+    public ParkingSpotAvailabilityResponse isSpotAvailable(Long id){
+        ParkingSpot parkingSpot = parkingSpotRepository.findById(id).orElseThrow(()-> new RuntimeException("Parking spot cannot be found!!!"));
+        return modelMapperService.response().map(parkingSpot, ParkingSpotAvailabilityResponse.class);
+   }
 }

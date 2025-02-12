@@ -2,6 +2,7 @@ package com.archisacademy.parking.controllers;
 
 import com.archisacademy.parking.dtos.request.ParkingSpotRequest;
 import com.archisacademy.parking.dtos.request.ParkingSpotUpdateRequest;
+import com.archisacademy.parking.dtos.response.ParkingSpotAvailabilityResponse;
 import com.archisacademy.parking.dtos.response.ParkingSpotResponse;
 import com.archisacademy.parking.dtos.response.ParkingSpotUpdateResponse;
 import com.archisacademy.parking.model.ParkingSpot;
@@ -55,4 +56,11 @@ public class ParkingSpotController {
         List<ParkingSpot> parkingSpots = parkingSpotService.listSpots();
         return ResponseEntity.ok(parkingSpots);
     }
+
+    @GetMapping("/{id}/availability")
+    public ResponseEntity<ParkingSpotAvailabilityResponse> isSpotAvailable(@PathVariable Long id){
+        ParkingSpotAvailabilityResponse response = parkingSpotService.isSpotAvailable(id);
+        return ResponseEntity.ok(response);
+    }
+
 }

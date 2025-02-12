@@ -2,6 +2,7 @@ package com.archisacademy.parking.services.abstracts;
 
 import com.archisacademy.parking.dtos.request.ParkingSpotRequest;
 import com.archisacademy.parking.dtos.request.ParkingSpotUpdateRequest;
+import com.archisacademy.parking.dtos.response.ParkingSpotAvailabilityResponse;
 import com.archisacademy.parking.dtos.response.ParkingSpotResponse;
 import com.archisacademy.parking.dtos.response.ParkingSpotUpdateResponse;
 import com.archisacademy.parking.model.ParkingSpot;
@@ -18,4 +19,6 @@ public interface ParkingSpotService {
     String deleteSpot(Long id);
 
     List<ParkingSpot> listSpots();
+
+    ParkingSpotAvailabilityResponse isSpotAvailable(Long id);
 }
