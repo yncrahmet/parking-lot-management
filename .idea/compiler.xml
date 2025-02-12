@@ -7,8 +7,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="eureka-server" />
         <module name="payment-service" />
+        <module name="eureka-server" />
+        <module name="report-generation-service" />
         <module name="parking-reservation" />
       </profile>
       <profile name="Annotation profile for Microservice-backend-parking-1" enabled="true">
@@ -33,6 +34,7 @@
       <module name="parking-reservation" options="-parameters" />
       <module name="parking-reservation (1)" options="-parameters" />
       <module name="payment-service" options="-parameters" />
+      <module name="report-generation-service" options="-parameters" />
     </option>
   </component>
 </project>
