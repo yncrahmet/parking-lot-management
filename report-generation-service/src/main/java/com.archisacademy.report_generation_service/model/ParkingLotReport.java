@@ -19,7 +19,6 @@ public class ParkingLotReport {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(nullable = false)
     private Long id;
-
     private String parkingLotName;
     private String location;
     private Long totalCapacity;

@@ -7,7 +7,6 @@ import com.archisacademy.report_generation_service.services.ParkingLotReportServ
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,16 +25,14 @@ public class ParkingLotReportController {
     }
 
     @GetMapping("/parking-lot/csv")
-    public ResponseEntity<ApiResponse<String>> generateCSVReport(@RequestParam(required = true) String filePath) {
-        ParkingLotReport report = new ParkingLotReport(); // Populate this with actual data
-        parkingLotReportService.generateCSVReport(report, filePath);
-        return ResponseEntity.ok(new ApiResponse<>(true, "CSV report generated successfully", filePath));
+    public ResponseEntity<ApiResponse<String>> generateCSVReport() {
+        parkingLotReportService.generateCSVReport();
+        return ResponseEntity.ok(new ApiResponse<>(true, "CSV report generated successfully", "C:/Users/log/report.csv"));
     }
 
     @GetMapping("/parking-lot/pdf")
-    public ResponseEntity<ApiResponse<String>> generatePDFReport(@RequestParam(required = true) String filePath) {
-        ParkingLotReport report = new ParkingLotReport();
-        parkingLotReportService.generatePDFReport(report, filePath);
-        return ResponseEntity.ok(new ApiResponse<>(true, "PDF report generated successfully", filePath));
+    public ResponseEntity<ApiResponse<String>> generatePDFReport() {
+        parkingLotReportService.generatePDFReport();
+        return ResponseEntity.ok(new ApiResponse<>(true, "PDF report generated successfully", "C:/Users/log/report.pdf"));
     }
 }

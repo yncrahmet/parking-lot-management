@@ -19,6 +19,9 @@ spring:
         show-sql: true
         ddl-auto: update
 
+    hibernate:
+      ddl-auto: update
+
 logging:
   file:
    name: C:/Users/log/application.log
@@ -27,3 +30,14 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+
+pdfDir: C:/Users/log/
+csvDir: C:/Users/log/
+reportFileName: ParkingLot-Report
+reportFileNameDateFormat: dd_MMMM_yyyy
+localDateFormat: "dd MMMM yyyy HH:mm:ss"
+logoImgPath: C:/Users/log/logo.jpg
+logoImgScale: 50,50
+currencySymbol: $
+table_noOfColumns: 6
+table.columnNames: Parking Lot Name,Location,Total Capacity,Current Usage, Revenue,Usage History
