@@ -19,6 +19,7 @@
 		<module>parking-reservation</module>
 		<module>parking</module>
 		<module>eureka-server</module>
+		<module>report-generation-service</module>
 	</modules>
 
 	<properties>
