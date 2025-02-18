@@ -25,7 +25,7 @@ spring:
 
 logging:
   file:
-   name: C:/temp/application.log
+   name: C:/Users/log/application.log
 
 eureka:
   client:
