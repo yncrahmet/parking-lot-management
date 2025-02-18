@@ -104,6 +104,20 @@
 			<scope>test</scope>
 			<version>2.24.1</version>
 		</dependency>
+		<!-- Apache POI (Excel dosyalarını okumak için) -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.2.3</version>
+		</dependency>
+
+		<!-- OpenCSV (CSV dosyalarını okumak için) -->
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>5.6</version>
+		</dependency>
+
 
 
 	</dependencies>
