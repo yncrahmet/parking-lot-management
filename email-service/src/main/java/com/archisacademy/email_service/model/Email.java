@@ -4,10 +4,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.sql.Timestamp;
+import java.util.Map;
 
 @Entity
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "emails")
@@ -25,53 +30,25 @@ public class Email {
     @Schema(name = "Email Subject", example = "Merhaba", required = true)
     private String subject;
 
-    @Column(name = "body", nullable = false)
-    @Schema(name = "Email Body", example = "Naber", required = true)
+    @Column(name = "body")
+    @Schema(name = "Email Body", example = "Naber")
     private String body;
 
     @Column(name = "attachment_path")
     @Schema(name = "Email Attachment Path", example = "C://users/resim.jpg")
     private String attachmentPath;
 
+    @Column(name = "template")
+    @Schema(name = "Email Template Name", example = "reservation_confirmation")
+    private String template;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "model", columnDefinition = "jsonb")
+    private Map<String, String> model;
+
     @CreationTimestamp
     @Column(name = "send_date", nullable = false, updatable = false)
     @Schema(name = "Email Sending Date", example = "2025-02-04 14:25:30")
     private Timestamp sendDate;
-
-    public String getToEmail() {
-        return toEmail;
-    }
-
-    public void setToEmail(String to) {
-        this.toEmail = to;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public String getAttachmentPath() {
-        return attachmentPath;
-    }
-
-    public void setAttachmentPath(String attachmentPath) {
-        this.attachmentPath = attachmentPath;
-    }
-
-    public Timestamp getSendDate() {
-        return sendDate;
-    }
 
 }
