@@ -63,4 +63,10 @@ public class ParkingSpotController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("search")
+    public ResponseEntity<List<ParkingSpotResponse>> searchParkingSpot(@RequestParam String parkingLocation){
+            List<ParkingSpotResponse> responses=parkingSpotService.searchParkingSpot(parkingLocation);
+            return ResponseEntity.ok(responses);
+    }
+
 }

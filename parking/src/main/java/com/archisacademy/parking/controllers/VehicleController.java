@@ -3,6 +3,7 @@ package com.archisacademy.parking.controllers;
 import com.archisacademy.parking.ApiResponse.ApiResponse;
 import com.archisacademy.parking.dtos.request.VehicleRequest;
 import com.archisacademy.parking.dtos.request.VehicleUpdateRequest;
+import com.archisacademy.parking.dtos.response.ParkingReservationResponse;
 import com.archisacademy.parking.dtos.response.VehicleResponse;
 import com.archisacademy.parking.services.abstracts.VehicleService;
 import io.swagger.annotations.ApiOperation;
@@ -114,6 +115,11 @@ public class VehicleController {
         ApiResponse<List<VehicleResponse>> apiResponse = vehicleService.getAll();
         logger.info("Fetched all vehicles successfully, total count: {}", apiResponse.getData().size());
         return ResponseEntity.ok(apiResponse);
+    }
+    @GetMapping("/{vehicleId}/reservations")
+    public ResponseEntity<List<ParkingReservationResponse>> getVehicleReservations(@PathVariable Long vehicleId) {
+        List<ParkingReservationResponse> reservations = vehicleService.getParkingReservations(vehicleId);
+        return ResponseEntity.ok(reservations);
     }
 
 }
