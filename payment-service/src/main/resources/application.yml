@@ -4,9 +4,12 @@ server:
 spring:
   application:
     name: payment-service
+  config:
+    import: "optional:configserver:http://localhost:8181"
+
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/payment-service
+    url: jdbc:postgresql://localhost:5433/payment-service
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: 12345

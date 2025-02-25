@@ -4,12 +4,14 @@ server:
 spring:
   application:
     name: parking
+  config:
+    import: "optional:configserver:http://localhost:8181"
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/parking
+    url: jdbc:postgresql://localhost:5433/parking
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: postgres
+    password: 12345
 
   flyway:
     enabled: true

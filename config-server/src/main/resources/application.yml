@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/gorkemiskeceli/config-server-demo
+    compatibility-verifier:
+      enabled: false
+
+server:
+  port: 8181
+
+
