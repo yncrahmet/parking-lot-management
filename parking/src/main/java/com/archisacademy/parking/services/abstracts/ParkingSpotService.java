@@ -21,4 +21,6 @@ public interface ParkingSpotService {
     List<ParkingSpot> listSpots();
 
     ParkingSpotAvailabilityResponse isSpotAvailable(Long id);
+
+    List<ParkingSpotResponse> searchParkingSpot(String parkingLocation);
 }

@@ -11,6 +11,7 @@ import com.archisacademy.parking.modelmapper.ModelMapperServiceImpl;
 import com.archisacademy.parking.repositories.UserRepository;
 import com.archisacademy.parking.services.abstracts.UserService;
 import jakarta.transaction.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -70,5 +71,23 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
         return "User successfully deleted";
     }
+
+    @Override
+    public ResponseEntity<List<UserResponse>> searchUsers(String name, String email) {
+        List<UserResponse> users = userRepository
+                .findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(name, email)
+                .stream()
+                .map(user -> new UserResponse(
+                        user.getName(),
+                        user.getUsername(),
+                        user.getEmail(),
+                        user.getPhoneNumber(),
+                        user.isActive()
+                ))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(users);
+    }
+
 
 }

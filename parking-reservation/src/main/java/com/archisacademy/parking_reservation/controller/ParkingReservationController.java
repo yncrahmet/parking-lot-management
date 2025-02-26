@@ -122,4 +122,12 @@ public class ParkingReservationController {
                 .headers(headers)
                 .body(fileContent);
 
-    }}
+    }
+
+    @GetMapping("/vehicle/{vehicleId}")
+    public List<ParkingReservationResponse> getReservationsByVehicleId(@PathVariable long vehicleId) {
+        List<ParkingReservationResponse> responses=parkingReservationService.getReservationsByVehicleId(vehicleId);
+        return  responses;
+    }
+
+}

@@ -85,4 +85,12 @@ public class UserController {
         List<BookingHistoryResponse> bookingHistory =  bookingService.userBookings(id);
         return ResponseEntity.ok(bookingHistory);
     }
+
+    @GetMapping("search")
+    public ResponseEntity<List<UserResponse>> searchUsers(@RequestParam(required = false) String name,
+                                                          @RequestParam(required = false) String email){
+        ResponseEntity<List<UserResponse>> users = userService.searchUsers(name, email);
+        return users;
+    }
+
 }

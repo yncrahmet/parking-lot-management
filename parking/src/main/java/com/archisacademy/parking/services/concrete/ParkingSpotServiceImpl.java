@@ -12,6 +12,7 @@ import com.archisacademy.parking.services.abstracts.ParkingSpotService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ParkingSpotServiceImpl implements ParkingSpotService {
@@ -65,4 +66,20 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
         ParkingSpot parkingSpot = parkingSpotRepository.findById(id).orElseThrow(()-> new RuntimeException("Parking spot cannot be found!!!"));
         return modelMapperService.response().map(parkingSpot, ParkingSpotAvailabilityResponse.class);
    }
+
+    @Override
+    public List<ParkingSpotResponse> searchParkingSpot(String parkingLocation) {
+        List<ParkingSpotResponse> spotResponses=parkingSpotRepository.findByParkingSpotLocationContainingIgnoreCase(parkingLocation)
+                .stream()
+                .map(parkingSpot -> new ParkingSpotResponse(
+                        parkingSpot.getId(),
+                        parkingSpot.getParkingSpotType(),
+                        parkingSpot.getAvailability(),
+                        parkingSpot.getParkingSpotLocation(),
+                        parkingSpot.getCreatedAt(),
+                        parkingSpot.getUpdatedAt()
+                ))
+                .collect(Collectors.toList());
+        return spotResponses;
+    }
 }

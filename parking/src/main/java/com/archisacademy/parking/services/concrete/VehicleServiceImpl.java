@@ -1,6 +1,8 @@
 package com.archisacademy.parking.services.concrete;
 
 import com.archisacademy.parking.ApiResponse.ApiResponse;
+import com.archisacademy.parking.client.ParkingReservationFeignClient;
+import com.archisacademy.parking.dtos.response.ParkingReservationResponse;
 import com.archisacademy.parking.modelmapper.ModelMapperService;
 import com.archisacademy.parking.dtos.request.VehicleRequest;
 import com.archisacademy.parking.dtos.request.VehicleUpdateRequest;
@@ -11,7 +13,10 @@ import com.archisacademy.parking.repositories.VehicleRepository;
 import com.archisacademy.parking.services.abstracts.VehicleService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,12 +26,15 @@ public class VehicleServiceImpl implements VehicleService {
 
     private final VehicleRepository vehicleRepository;
     private final ModelMapperService modelMapperService;
+    private final ParkingReservationFeignClient reservationFeignClient;
     private static final Logger logger = LogManager.getLogger(VehicleServiceImpl.class);
 
 
-    public VehicleServiceImpl(VehicleRepository vehicleRepository, ModelMapperService modelMapperService) {
+    public VehicleServiceImpl(VehicleRepository vehicleRepository, ModelMapperService modelMapperService,
+                              ParkingReservationFeignClient reservationFeignClient) {
         this.vehicleRepository = vehicleRepository;
         this.modelMapperService = modelMapperService;
+        this.reservationFeignClient = reservationFeignClient;
     }
 
     @Override
@@ -88,6 +96,8 @@ public class VehicleServiceImpl implements VehicleService {
         return new ApiResponse<>(true,"Vehicles found.", vehicleResponseList);
     }
 
+
+
     private Vehicle getVehicleById(Long vehicleId) {
         logger.info("Fetching vehicle by ID {}", vehicleId);
 
@@ -98,4 +108,9 @@ public class VehicleServiceImpl implements VehicleService {
                 });
     }
 
+    @Override
+    public List<ParkingReservationResponse> getParkingReservations(Long vehicleId) {{
+            return reservationFeignClient.getReservationsByVehicleId(vehicleId);
+        }
+    }
 }
