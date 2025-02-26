@@ -1,12 +1,14 @@
 server:
-  port: 8083
+  port: 8085
 
 spring:
   application:
     name: email-service
+  config:
+    import: "optional:configserver:http://localhost:8181"
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/email_service
+    url: jdbc:postgresql://localhost:5433/email_service
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: 12345
