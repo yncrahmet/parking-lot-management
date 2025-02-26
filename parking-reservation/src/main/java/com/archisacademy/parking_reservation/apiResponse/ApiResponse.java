@@ -1,8 +1,11 @@
 package com.archisacademy.parking_reservation.apiResponse;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+
 public class ApiResponse<T> {
 
     private Boolean success;
