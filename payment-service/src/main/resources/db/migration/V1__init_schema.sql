@@ -1,4 +1,4 @@
--- V1__init_schema.sql
+ V1__init_schema.sql
 
 -- -- Payment Service  TABLE
 -- CREATE TABLE payments (
