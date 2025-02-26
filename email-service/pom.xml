@@ -135,6 +135,12 @@
 			<version>3.0.0</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- THYMELEAF-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

@@ -4,35 +4,41 @@ import com.archisacademy.parking_reservation.apiResponse.ApiResponse;
 import com.archisacademy.parking_reservation.dto.request.ParkingReservationRequest;
 import com.archisacademy.parking_reservation.dto.request.ParkingReservationUpdateRequest;
 import com.archisacademy.parking_reservation.dto.response.ParkingReservationResponse;
+import com.archisacademy.parking_reservation.dto.response.VehicleResponse;
 import com.archisacademy.parking_reservation.entity.ParkingReservation;
-
+import com.archisacademy.parking_reservation.entity.ParkingSpot;
 import com.archisacademy.parking_reservation.exception.ParkingReservationNotFoundException;
+import com.archisacademy.parking_reservation.client.ParkingSpotFeignClient;
+import com.archisacademy.parking_reservation.client.VehicleFeignClient;
 import com.archisacademy.parking_reservation.modelMapper.ModelMapperServiceImpl;
 import com.archisacademy.parking_reservation.repository.ParkingReservationRepository;
 import com.archisacademy.parking_reservation.service.abstracts.ParkingReservationService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ParkingReservationImpl implements ParkingReservationService {
     private final ParkingReservationRepository parkingReservationRepository;
     private final ModelMapperServiceImpl modelMapperService;
+    private final VehicleFeignClient vehicleFeignClient;
+    private final ParkingSpotFeignClient parkingSpotFeignClient;
 
     @Transactional()
     @Override
     public ApiResponse<ParkingReservationResponse> addParkingReservation( ParkingReservationRequest reservationRequest) {
 
+        ResponseEntity<ApiResponse<VehicleResponse>> vehicleResponse= vehicleFeignClient.get(reservationRequest.getVehicleId());
+        ResponseEntity<ParkingSpot> parkingSpotResponse=parkingSpotFeignClient.getParkingSpotById(reservationRequest.getParkingSpotId());
         ParkingReservation reservation=modelMapperService.request().map(reservationRequest, ParkingReservation.class);
+        reservation.setParkingSpotId(parkingSpotResponse.getBody().getId());
+        reservation.setVehicleId(reservationRequest.getVehicleId());
         ParkingReservation saved=parkingReservationRepository.save(reservation);
         ParkingReservationResponse response= modelMapperService.request().
                 map(saved, ParkingReservationResponse.class);
@@ -70,4 +76,19 @@ public class ParkingReservationImpl implements ParkingReservationService {
         return new ApiResponse<>(true,"Parking reservation deleted successfully",null);
     }
 
-}
+    @Override
+    public List<ParkingReservationResponse> getReservationsByVehicleId(Long vehicleId) {
+        List<ParkingReservationResponse> responses=parkingReservationRepository.findByVehicleId(vehicleId)
+                .stream()
+                .map(reservation -> new ParkingReservationResponse(
+                        reservation.getReservationId(),
+                        reservation.getParkingSpotId(),
+                        reservation.getCreatedAt(),
+                        reservation.getEndTime()
+                ))
+                .collect(Collectors.toList());
+        return responses;
+    }
+    }
+
+

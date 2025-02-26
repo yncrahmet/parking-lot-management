@@ -26,10 +26,10 @@ spring:
           ddl-auto: none
 
   mail:
-    host: smtp.gmail.com
+    host: sandbox.smtp.mailtrap.io
     port: 587
-    username: test@gmail.com
-    password: ruhi123
+    username: 2ddd9bbf861c7c
+    password: dda6af58419776
 
     properties:
       mail:

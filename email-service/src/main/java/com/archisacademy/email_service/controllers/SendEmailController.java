@@ -2,6 +2,8 @@ package com.archisacademy.email_service.controllers;
 
 import com.archisacademy.email_service.ApiResponse.ApiResponse;
 import com.archisacademy.email_service.dtos.request.SendEmailRequest;
+import com.archisacademy.email_service.dtos.request.SendTemplateEmailRequest;
+import com.archisacademy.email_service.dtos.response.EmailTemplateResponse;
 import com.archisacademy.email_service.dtos.response.SendEmailResponse;
 import com.archisacademy.email_service.services.SendEmailService;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -33,6 +35,17 @@ public class SendEmailController {
     })
     public ResponseEntity<ApiResponse<SendEmailResponse>> sendEmail(@Valid @RequestBody SendEmailRequest request) {
         ApiResponse<SendEmailResponse> response = sendEmailService.sendEmail(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/send/template")
+    @Operation(summary = "Send mail with template", description = "Sending email with a ready-made template")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "HTTP Status 200 OK" ,content = { @Content(schema = @Schema(implementation = EmailTemplateResponse.class), mediaType = "application/json") } ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "HTTP Status 400 Bad Request", content = { @Content(schema = @Schema()) })
+    })
+    public ResponseEntity<ApiResponse<EmailTemplateResponse>> sendEmailWithTemplate(@Valid @RequestBody SendTemplateEmailRequest sendTemplateEmailRequest) {
+        ApiResponse<EmailTemplateResponse> response = sendEmailService.SendEmailWithTemplate(sendTemplateEmailRequest);
         return ResponseEntity.ok(response);
     }
 

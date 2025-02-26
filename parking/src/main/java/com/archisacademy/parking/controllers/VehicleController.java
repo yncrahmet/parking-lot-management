@@ -3,8 +3,10 @@ package com.archisacademy.parking.controllers;
 import com.archisacademy.parking.ApiResponse.ApiResponse;
 import com.archisacademy.parking.dtos.request.VehicleRequest;
 import com.archisacademy.parking.dtos.request.VehicleUpdateRequest;
+import com.archisacademy.parking.dtos.response.ParkingReservationResponse;
 import com.archisacademy.parking.dtos.response.VehicleResponse;
 import com.archisacademy.parking.services.abstracts.VehicleService;
+import com.archisacademy.parking.services.concrete.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,8 +17,12 @@ import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,10 +33,21 @@ import java.util.List;
 public class VehicleController {
 
     private final VehicleService vehicleService;
+    private final VehicleImportService vehicleImportService;
+    private final ExcelImportService excelImportService;
+    private final CsvImportService csvImportService;
+    private final CsvExporterService csvExporterService;
     private final Logger logger = LoggerFactory.getLogger(VehicleController.class);
+    private final ExcelExporterService excelExporterService;
 
-    public VehicleController(VehicleService vehicleService) {
+    public VehicleController(VehicleService vehicleService, ExcelImportService excelImportService,
+                             CsvImportService csvImportService, VehicleImportService vehicleImportService, CsvExporterService csvExporterService, ExcelExporterService excelExporterService) {
         this.vehicleService = vehicleService;
+        this.excelImportService = excelImportService;
+        this.csvImportService = csvImportService;
+        this.vehicleImportService = vehicleImportService;
+        this.csvExporterService = csvExporterService;
+        this.excelExporterService = excelExporterService;
     }
 
     @PostMapping
@@ -115,5 +132,48 @@ public class VehicleController {
         logger.info("Fetched all vehicles successfully, total count: {}", apiResponse.getData().size());
         return ResponseEntity.ok(apiResponse);
     }
+    @GetMapping("/{vehicleId}/reservations")
+    public ResponseEntity<List<ParkingReservationResponse>> getVehicleReservations(@PathVariable Long vehicleId) {
+        List<ParkingReservationResponse> reservations = vehicleService.getParkingReservations(vehicleId);
+        return ResponseEntity.ok(reservations);
+    }
 
-}
+    @PostMapping("import")
+    public ResponseEntity<String> importReservations(@RequestParam("file") MultipartFile file) {
+        try {
+            vehicleImportService.importFile(file);
+            return ResponseEntity.ok("Data imported successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("An error occurred during import: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("export/{format}")
+    public ResponseEntity<byte[]> exportData(@PathVariable String format) {
+        byte[] fileContent;
+        String contentType;
+        String fileName;
+
+        if ("csv".equalsIgnoreCase(format)) {
+            fileContent = csvExporterService.exportToCsv();
+            contentType = "text/csv";
+            fileName = "parking_reservations.csv";
+        } else if ("excel".equalsIgnoreCase(format)) {
+            fileContent = excelExporterService.exportToExcel();
+            contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            fileName = "parking_reservations.xlsx";
+        } else {
+            return ResponseEntity.badRequest().body("Unsupported format".getBytes());
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", fileName);
+        headers.setContentType(MediaType.parseMediaType(contentType));
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .headers(headers)
+                .body(fileContent);
+
+    }}
+
