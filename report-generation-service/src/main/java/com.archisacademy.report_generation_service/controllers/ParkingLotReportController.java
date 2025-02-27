@@ -35,4 +35,10 @@ public class ParkingLotReportController {
         parkingLotReportService.generatePDFReport();
         return ResponseEntity.ok(new ApiResponse<>(true, "PDF report generated successfully", "C:/Users/log/report.pdf"));
     }
+
+    @GetMapping("/parking-lot/daily")
+    public ResponseEntity<ApiResponse<String>> generateDailyReports() {
+        parkingLotReportService.generateDailyReports();
+        return ResponseEntity.ok(new ApiResponse<>(true, "Daily report generated successfully", "C:/Users/log/daily-report.pdf"));
+    }
 }

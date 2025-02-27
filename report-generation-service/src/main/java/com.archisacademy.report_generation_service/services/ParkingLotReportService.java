@@ -9,4 +9,6 @@ public interface ParkingLotReportService {
     void generateCSVReport();
 
     void generatePDFReport();
+
+    void generateDailyReports();
 }
