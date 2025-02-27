@@ -1,6 +1,7 @@
 package com.archisacademy.gatewayserver;
 
 
+import RateLimitGatewayFilter.RateLimitGatewayFilterFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -19,22 +20,46 @@ public class GatewayServerApplication {
 	public RouteLocator customRouteLocator(RouteLocatorBuilder routeLocatorBuilder) {
 		return routeLocatorBuilder.routes()
 				.route(p -> p.path("/microservice/api/v1/parking/reservation/**")
-						.filters(f -> f.rewritePath("/microservice/api/v1/parking/reservation(?<segment>.*)", "/api/v1/parking/reservation${segment}"))
+						.filters(f -> f.rewritePath("/microservice/api/v1/parking/reservation(?<segment>.*)", "/api/v1/parking/reservation${segment}")
+								.filter(new RateLimitGatewayFilterFactory().apply(new RateLimitGatewayFilterFactory.Config() {{
+									setLimit(10);
+									setDuration(1);
+								}})))
 						.uri("lb://RESERVATION-SERVICE"))
-				.route(p->p.path("/microservice/api/vehicles/**")
-						.filters(f->f.rewritePath("/microservice/api/vehicles(?<segment>.*)","/api/vehicles${segment}"))
+				.route(p -> p.path("/microservice/api/vehicles/**")
+						.filters(f -> f.rewritePath("/microservice/api/vehicles(?<segment>.*)", "/api/vehicles${segment}")
+								.filter(new RateLimitGatewayFilterFactory().apply(new RateLimitGatewayFilterFactory.Config() {{
+									setLimit(10);
+									setDuration(1);
+								}})))
 						.uri("lb://PARKING"))
-				.route(p->p.path("/microservice/api/v1/booking/**")
-						.filters(f->f.rewritePath("/microservice/api/v1/booking(?<segment>.*)","/api/v1/booking${segment}"))
+				.route(p -> p.path("/microservice/api/v1/booking/**")
+						.filters(f -> f.rewritePath("/microservice/api/v1/booking(?<segment>.*)", "/api/v1/booking${segment}")
+								.filter(new RateLimitGatewayFilterFactory().apply(new RateLimitGatewayFilterFactory.Config() {{
+									setLimit(10);
+									setDuration(1);
+								}})))
 						.uri("lb://PARKING"))
-				.route(p->p.path("/microservice/api/v1/parkingspots/**")
-						.filters(f->f.rewritePath("/microservice/api/v1/parkingspots/(?<segment>.*)","/api/v1/parkingspots/${segment}"))
+				.route(p -> p.path("/microservice/api/v1/parkingspots/**")
+						.filters(f -> f.rewritePath("/microservice/api/v1/parkingspots/(?<segment>.*)", "/api /parkingspots/${segment}")
+								.filter(new RateLimitGatewayFilterFactory().apply(new RateLimitGatewayFilterFactory.Config() {{
+									setLimit(10);
+									setDuration(1);
+								}})))
 						.uri("lb://PARKING"))
-				.route(p->p.path("/microservice/api/parking/**")
-						.filters(f->f.rewritePath("/microservice/api/parking(?<segment>.*)","/api/parking${segment}"))
+				.route(p -> p.path("/microservice/api/parking/**")
+						.filters(f -> f.rewritePath("/microservice/api/parking(?<segment>.*)", "/api/parking${segment}")
+								.filter(new RateLimitGatewayFilterFactory().apply(new RateLimitGatewayFilterFactory.Config() {{
+									setLimit(10);
+									setDuration(1);
+								}})))
 						.uri("lb://PARKING"))
-				.route(p->p.path("/microservice/api/users**")
-						.filters(f->f.rewritePath("/microservice/api/users(?<segment>.*)","/api/users${segment}"))
+				.route(p -> p.path("/microservice/api/users**")
+						.filters(f -> f.rewritePath("/microservice/api/users(?<segment>.*)", "/api/users${segment}")
+								.filter(new RateLimitGatewayFilterFactory().apply(new RateLimitGatewayFilterFactory.Config() {{
+									setLimit(10);
+									setDuration(1);
+								}})))
 						.uri("lb://PARKING"))
 				.build();
 	}
