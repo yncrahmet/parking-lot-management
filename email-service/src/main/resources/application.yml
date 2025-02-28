@@ -25,6 +25,11 @@ spring:
           show-sql: true
           ddl-auto: none
 
+  boot:
+    admin:
+      client:
+        url: "http://localhost:8192"
+
   mail:
     host: sandbox.smtp.mailtrap.io
     port: 587
@@ -45,5 +50,16 @@ spring:
 logging:
   file:
     path: C:\log
+    name: config-server.log
+    max-history: 5
+    max-size: 10MB
   level:
     root: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: always

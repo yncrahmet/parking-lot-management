@@ -10,7 +10,7 @@ spring:
     url: jdbc:postgresql://localhost:5433/reservation
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: postgres
+    password: 12345
 
   jpa:
     hibernate:
@@ -18,6 +18,10 @@ spring:
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
+  boot:
+    admin:
+          client:
+            url: "http://localhost:8192"
 
 eureka:
   client:
@@ -25,5 +29,16 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 
+logging:
+  file:
+    name: reservation-service.log
+    max-history: 5
+    max-size: 10MB
 
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: always
