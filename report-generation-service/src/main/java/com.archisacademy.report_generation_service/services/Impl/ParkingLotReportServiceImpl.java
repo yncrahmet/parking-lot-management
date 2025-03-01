@@ -13,6 +13,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -24,7 +25,6 @@ import java.time.format.DateTimeFormatter;
 
 @Service
 public class ParkingLotReportServiceImpl implements ParkingLotReportService {
-    private final String csvFilePath = "C:/Users/log/";
     private static Font COURIER = new Font(Font.FontFamily.COURIER, 20, Font.BOLD);
     private static Font COURIER_SMALL = new Font(Font.FontFamily.COURIER, 16, Font.BOLD);
     private static Font COURIER_SMALL_FOOTER = new Font(Font.FontFamily.COURIER, 12, Font.BOLD);
@@ -237,4 +237,18 @@ public class ParkingLotReportServiceImpl implements ParkingLotReportService {
             String localDateString = LocalDateTime.now().format(DateTimeFormatter.ofPattern(reportFileNameDateFormat));
             return pdfDir+reportFileName+"-"+localDateString+".pdf";
         }
+
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void generateDailyReports() {
+        System.out.println("Daily report generation started");
+        try {
+            generateCSVReport();
+            generatePDFReport();
+            System.out.println("Reports generated successfully");
+        } catch (Exception e) {
+            System.err.println("Error generating reports: " + e.getMessage());
+            throw new RuntimeException("Error generating reports", e);
+        }
+    }
 }
