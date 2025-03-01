@@ -23,6 +23,10 @@ spring:
 
     hibernate:
       ddl-auto: update
+  boot:
+    admin:
+          client:
+            url: "http://localhost:8192"
 
 logging:
   file:
@@ -43,3 +47,13 @@ logoImgScale: 50,50
 currencySymbol: $
 table_noOfColumns: 6
 table.columnNames: Parking Lot Name,Location,Total Capacity,Current Usage, Revenue,Usage History
+
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: always

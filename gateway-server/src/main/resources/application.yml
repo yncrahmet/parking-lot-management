@@ -9,7 +9,15 @@ spring:
     discovery:
       locator:
       enabled: true
-
+  boot:
+    admin:
+          client:
+            url: "http://localhost:8192"
+logging:
+  file:
+    name: gateway-server.log
+    max-history: 5
+    max-size: 10MB
 
 management:
   endpoints:
