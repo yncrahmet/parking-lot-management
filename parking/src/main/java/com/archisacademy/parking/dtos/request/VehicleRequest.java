@@ -18,4 +18,7 @@ public class VehicleRequest {
 
     private boolean isActive;
 
+    @NotNull(message = "Vehicle priority is required.")
+    private String priority;
+
 }

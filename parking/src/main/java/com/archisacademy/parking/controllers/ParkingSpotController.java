@@ -69,4 +69,16 @@ public class ParkingSpotController {
             return ResponseEntity.ok(responses);
     }
 
+    @GetMapping("/get-type/{id}")
+    public ResponseEntity<String> getParkingSpotType(@PathVariable Long id){
+        String parkingSpotType = parkingSpotService.getParkingSpotType(id);
+        return ResponseEntity.ok(parkingSpotType);
+    }
+
+    @PutMapping("/update-availability/{id}")
+    public ResponseEntity<Void> updateAvailability(@PathVariable Long id, @RequestBody Boolean availability) {
+        parkingSpotService.updateAvailability(id, availability);
+        return ResponseEntity.ok().build();
+    }
+
 }

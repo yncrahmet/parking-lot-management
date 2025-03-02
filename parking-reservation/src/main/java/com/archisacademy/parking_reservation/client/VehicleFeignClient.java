@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "vehicle-service",url = "http://localhost:8081")
 public interface VehicleFeignClient {
-    @GetMapping("api/vehicles/{vehicleId}")
+    @GetMapping("/api/vehicles/{vehicleId}")
     ResponseEntity<ApiResponse<VehicleResponse>> get(@PathVariable Long vehicleId);
+
+    @GetMapping("/api/vehicles/priority/{vehicleId}")
+    ResponseEntity<String> getPriority(@PathVariable Long vehicleId);
 }

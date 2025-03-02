@@ -113,4 +113,17 @@ public class VehicleServiceImpl implements VehicleService {
             return reservationFeignClient.getReservationsByVehicleId(vehicleId);
         }
     }
+
+    @Override
+    public String getVehiclePriority(Long vehicleId) {
+
+        Vehicle vehicle = getVehicleById(vehicleId);
+
+        if (vehicle.getPriority().equals("VIP") || vehicle.getPriority().equals("HANDICAPPED")) {
+            return vehicle.getPriority();
+        }
+
+        return "No priority!";
+    }
+
 }

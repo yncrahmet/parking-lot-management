@@ -61,4 +61,10 @@ public class GlobalExceptionHandler {
                 .body(new ApiResponse<>(false, ex.getMessage()));
     }
 
+    @ExceptionHandler(ParkingSpotNotFoundException.class)
+    public ResponseEntity<ApiResponse<?>> handleParkingSpotNotFound(ParkingSpotNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse<>(false, ex.getMessage()));
+    }
+
 }
