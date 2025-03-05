@@ -19,6 +19,9 @@ public interface VehicleService {
     ApiResponse<VehicleResponse> get(Long vehicleId);
 
     ApiResponse<List<VehicleResponse>> getAll();
+
     List<ParkingReservationResponse> getParkingReservations(Long vehicleId);
+
+    String getVehiclePriority(Long vehicleId);
 
 }

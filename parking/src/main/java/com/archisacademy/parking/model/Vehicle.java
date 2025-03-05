@@ -2,15 +2,14 @@ package com.archisacademy.parking.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "vehicles")
@@ -37,5 +36,9 @@ public class Vehicle {
     @Column(name = "registration_date", updatable = false)
     @Schema(name = "Registration Date", example = "2022-01-01", required = true, nullable = false)
     private Timestamp registrationDate;
+
+    @Column(name = "priority")
+    @Schema(name = "Priority status", example = "VIP")
+    private String priority;
 
 }

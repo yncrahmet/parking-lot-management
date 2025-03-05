@@ -5,6 +5,7 @@ import com.archisacademy.parking.dtos.request.ParkingSpotUpdateRequest;
 import com.archisacademy.parking.dtos.response.ParkingSpotAvailabilityResponse;
 import com.archisacademy.parking.dtos.response.ParkingSpotResponse;
 import com.archisacademy.parking.dtos.response.ParkingSpotUpdateResponse;
+import com.archisacademy.parking.exception.ParkingSpotNotFoundException;
 import com.archisacademy.parking.model.ParkingSpot;
 import com.archisacademy.parking.modelmapper.ModelMapperService;
 import com.archisacademy.parking.repositories.ParkingSpotRepository;
@@ -82,4 +83,26 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
                 .collect(Collectors.toList());
         return spotResponses;
     }
+
+    @Override
+    public String getParkingSpotType(Long id) {
+        ParkingSpot parkingSpot = parkingSpotRepository.findById(id)
+                .orElseThrow(() -> new ParkingSpotNotFoundException("Parking spot cannot be found!"));
+
+        if (parkingSpot.getParkingSpotType().equals("HANDICAPPED") || parkingSpot.getParkingSpotType().equals("PREMIUM")) {
+            return parkingSpot.getParkingSpotType();
+        }
+
+        return "REGULAR";
+    }
+
+    @Override
+    public void updateAvailability(Long id, Boolean availability) {
+        ParkingSpot parkingSpot = parkingSpotRepository.findById(id)
+                .orElseThrow(() -> new ParkingSpotNotFoundException("Parking spot cannot be found!"));
+
+        parkingSpot.setAvailability(availability);
+        parkingSpotRepository.save(parkingSpot);
+    }
+
 }

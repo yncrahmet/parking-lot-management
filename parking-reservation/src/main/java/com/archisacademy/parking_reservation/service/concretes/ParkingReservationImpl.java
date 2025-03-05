@@ -14,7 +14,6 @@ import com.archisacademy.parking_reservation.modelMapper.ModelMapperServiceImpl;
 import com.archisacademy.parking_reservation.repository.ParkingReservationRepository;
 import com.archisacademy.parking_reservation.service.abstracts.ParkingReservationService;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,12 +33,20 @@ public class ParkingReservationImpl implements ParkingReservationService {
     @Override
     public ApiResponse<ParkingReservationResponse> addParkingReservation( ParkingReservationRequest reservationRequest) {
 
+        String vehiclePriority = getVehiclePriority(reservationRequest.getVehicleId());
+        ParkingSpot parkingSpot = getParkingSpot(reservationRequest.getParkingSpotId());
+
+        checkPriorityAndAccess(parkingSpot.getParkingSpotType(), vehiclePriority, parkingSpot.getAvailability());
+
         ResponseEntity<ApiResponse<VehicleResponse>> vehicleResponse= vehicleFeignClient.get(reservationRequest.getVehicleId());
         ResponseEntity<ParkingSpot> parkingSpotResponse=parkingSpotFeignClient.getParkingSpotById(reservationRequest.getParkingSpotId());
         ParkingReservation reservation=modelMapperService.request().map(reservationRequest, ParkingReservation.class);
         reservation.setParkingSpotId(parkingSpotResponse.getBody().getId());
         reservation.setVehicleId(reservationRequest.getVehicleId());
         ParkingReservation saved=parkingReservationRepository.save(reservation);
+
+        parkingSpotFeignClient.updateAvailability(parkingSpot.getId(), false);
+
         ParkingReservationResponse response= modelMapperService.request().
                 map(saved, ParkingReservationResponse.class);
         return new ApiResponse<>(true,"Parking reservation added successfully",response);
@@ -89,6 +96,33 @@ public class ParkingReservationImpl implements ParkingReservationService {
                 .collect(Collectors.toList());
         return responses;
     }
+
+    private String getVehiclePriority(Long vehicleId) {
+        ResponseEntity<String> vehiclePriorityResponse = vehicleFeignClient.getPriority(vehicleId);
+        if (vehiclePriorityResponse.getBody() == null || !vehiclePriorityResponse.getStatusCode().is2xxSuccessful()) {
+            throw new RuntimeException("Vehicle priority not found");
+        }
+        return vehiclePriorityResponse.getBody();
     }
 
+    private ParkingSpot getParkingSpot(Long parkingSpotId) {
+        ResponseEntity<ParkingSpot> parkingSpotResponse = parkingSpotFeignClient.getParkingSpotById(parkingSpotId);
+        if (parkingSpotResponse.getBody() == null || !parkingSpotResponse.getStatusCode().is2xxSuccessful()) {
+            throw new RuntimeException("Parking spot not found");
+        }
+        return parkingSpotResponse.getBody();
+    }
 
+    private void checkPriorityAndAccess(String parkingSpotType, String vehiclePriority, boolean isAvailable) {
+        if ("HANDICAPPED".equals(parkingSpotType) && !"HANDICAPPED".equals(vehiclePriority)) {
+            throw new RuntimeException("Only handicapped vehicles can reserve handicapped spots");
+        }
+        if ("PREMIUM".equals(parkingSpotType) && !"VIP".equals(vehiclePriority)) {
+            throw new RuntimeException("Only VIP vehicles can reserve premium spots");
+        }
+        if (!isAvailable) {
+            throw new RuntimeException("Parking spot is not available");
+        }
+    }
+
+}

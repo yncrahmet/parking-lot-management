@@ -175,5 +175,12 @@ public class VehicleController {
                 .headers(headers)
                 .body(fileContent);
 
-    }}
+    }
 
+    @GetMapping("/priority/{vehicleId}")
+    public ResponseEntity<String> getVehiclePriority(@PathVariable Long vehicleId) {
+        String priorityStatus = vehicleService.getVehiclePriority(vehicleId);
+        return ResponseEntity.ok(priorityStatus);
+    }
+
+}
