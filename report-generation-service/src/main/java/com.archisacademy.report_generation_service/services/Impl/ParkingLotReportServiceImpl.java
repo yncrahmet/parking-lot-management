@@ -1,7 +1,9 @@
 package com.archisacademy.report_generation_service.services.Impl;
 
 import com.archisacademy.report_generation_service.dtos.ParkingLotReportResponse;
+import com.archisacademy.report_generation_service.dtos.ParkingLotUtilizationStatsResponse;
 import com.archisacademy.report_generation_service.model.ParkingLotReport;
+import com.archisacademy.report_generation_service.model.ParkingLotUsage;
 import com.archisacademy.report_generation_service.repositories.ParkingLotReportRepository;
 import com.archisacademy.report_generation_service.services.ParkingLotReportService;
 import com.itextpdf.text.*;
@@ -19,9 +21,10 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 public class ParkingLotReportServiceImpl implements ParkingLotReportService {
@@ -239,7 +242,7 @@ public class ParkingLotReportServiceImpl implements ParkingLotReportService {
         }
 
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 33 22 * * ?")
     public void generateDailyReports() {
         System.out.println("Daily report generation started");
         try {
@@ -250,5 +253,51 @@ public class ParkingLotReportServiceImpl implements ParkingLotReportService {
             System.err.println("Error generating reports: " + e.getMessage());
             throw new RuntimeException("Error generating reports", e);
         }
+    }
+
+    @Override
+    public ParkingLotUtilizationStatsResponse getUtilizationStats(Long parkingLotId) {
+        Optional<ParkingLotReport> reportOptional = parkingLotRepository.findById(parkingLotId);
+        if (reportOptional.isPresent()) {
+            ParkingLotReport report = reportOptional.get();
+            Double occupancyRate = (double) report.getCurrentUsage() / report.getTotalCapacity() * 100;
+            String peakTime = calculatePeakTime(report.getUsageHistory());
+
+            return new ParkingLotUtilizationStatsResponse(
+                    report.getParkingLotName(),
+                    report.getLocation(),
+                    report.getTotalCapacity(),
+                    report.getCurrentUsage(),
+                    report.getRevenue(),
+                    Collections.singletonList(peakTime),
+                    occupancyRate,
+                    peakTime
+            );
+        }
+        throw new RuntimeException("Parking lot report not found");
+    }
+
+    private String calculatePeakTime(List<ParkingLotUsage> usageHistory) {
+        if (usageHistory == null || usageHistory.isEmpty()) {
+            return "No data available";
+        }
+        Map<String, Long> hourlyUsage = new HashMap<>();
+
+        for (ParkingLotUsage usage : usageHistory) {
+            String hour = usage.getTimestamp().toString().substring(0, 13);
+            hourlyUsage.put(hour, hourlyUsage.getOrDefault(hour, 0L) + usage.getNumberOfVehicles());
+        }
+
+        String peakHour = null;
+        Long maxVehicles = 0L;
+
+        for (Map.Entry<String, Long> entry : hourlyUsage.entrySet()) {
+            if (entry.getValue() > maxVehicles) {
+                maxVehicles = entry.getValue();
+                peakHour = entry.getKey();
+            }
+        }
+
+        return peakHour != null ? peakHour + ":00" : "No peak time found";
     }
 }

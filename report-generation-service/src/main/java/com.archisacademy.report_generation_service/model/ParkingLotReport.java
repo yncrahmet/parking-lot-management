@@ -24,6 +24,7 @@ public class ParkingLotReport {
     private Long totalCapacity;
     private Long currentUsage;
     private Double revenue;
-    private List<String> usageHistory;
+    @OneToMany(mappedBy = "parkingLotReport", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<ParkingLotUsage> usageHistory;
 
 }

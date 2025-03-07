@@ -2,10 +2,12 @@ package com.archisacademy.report_generation_service.controllers;
 
 import com.archisacademy.report_generation_service.apiResponse.ApiResponse;
 import com.archisacademy.report_generation_service.dtos.ParkingLotReportResponse;
+import com.archisacademy.report_generation_service.dtos.ParkingLotUtilizationStatsResponse;
 import com.archisacademy.report_generation_service.model.ParkingLotReport;
 import com.archisacademy.report_generation_service.services.ParkingLotReportService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,5 +42,12 @@ public class ParkingLotReportController {
     public ResponseEntity<ApiResponse<String>> generateDailyReports() {
         parkingLotReportService.generateDailyReports();
         return ResponseEntity.ok(new ApiResponse<>(true, "Daily report generated successfully", "C:/Users/log/daily-report.pdf"));
+    }
+
+
+    @GetMapping("/{id}/utilization")
+    public ResponseEntity<ParkingLotUtilizationStatsResponse> getUtilizationStats(@PathVariable Long id) {
+        ParkingLotUtilizationStatsResponse stats = parkingLotReportService.getUtilizationStats(id);
+        return ResponseEntity.ok(stats);
     }
 }
