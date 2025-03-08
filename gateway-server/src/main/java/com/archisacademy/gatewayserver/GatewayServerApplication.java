@@ -48,13 +48,13 @@ public class GatewayServerApplication {
 								}})))
 						.uri("lb://PARKING"))
 				.route(p -> p.path("/microservice/api/parking/**")
-						.filters(f -> f.rewritePath("/microservice/api/parking(?<segment>.*)", "/api/parking${segment}")
+						.filters(f -> f.rewritePath("/microservice/api/users/(?<segment>.*)", "/api/users/${segment}")
 								.filter(new RateLimitGatewayFilterFactory().apply(new RateLimitGatewayFilterFactory.Config() {{
 									setLimit(10);
 									setDuration(1);
 								}})))
 						.uri("lb://PARKING"))
-				.route(p -> p.path("/microservice/api/users**")
+				.route(p -> p.path("/microservice/api/users/**")
 						.filters(f -> f.rewritePath("/microservice/api/users(?<segment>.*)", "/api/users${segment}")
 								.filter(new RateLimitGatewayFilterFactory().apply(new RateLimitGatewayFilterFactory.Config() {{
 									setLimit(10);

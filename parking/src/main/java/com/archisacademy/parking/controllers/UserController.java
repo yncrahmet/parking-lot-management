@@ -1,12 +1,16 @@
 package com.archisacademy.parking.controllers;
 
+import com.archisacademy.parking.dtos.request.UserAuthRequest;
+import com.archisacademy.parking.dtos.request.UserLoginRequest;
 import com.archisacademy.parking.dtos.request.UserRequest;
 import com.archisacademy.parking.dtos.request.UserUpdateRequest;
 import com.archisacademy.parking.dtos.response.BookingHistoryResponse;
+import com.archisacademy.parking.dtos.response.UserAuthResponse;
 import com.archisacademy.parking.dtos.response.UserResponse;
 import com.archisacademy.parking.dtos.response.UserUpdateResponse;
 import com.archisacademy.parking.services.abstracts.BookingService;
 import com.archisacademy.parking.services.abstracts.UserService;
+import com.archisacademy.parking.services.concrete.AuthServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,21 +18,27 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.jboss.logging.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("/api/users")
 @Tag(name = "User", description = "This tag encompasses all the API endpoints related to user management. It provides functionality for creating, reading, updating, and deleting users. It includes endpoints for saving a new user, retrieving a list of all existing users, updating an existing user, and deleting an existing user. The endpoints are documented using Swagger annotations to provide clear and concise descriptions of their purpose and expected responses.")
 public class UserController {
     private final UserService userService;
     private final BookingService bookingService;
+    private final AuthServiceImpl authService;
+    private final Logger logger= Logger.getLogger(UserController.class);
 
-    public UserController(UserService userService, BookingService bookingService) {
+    public UserController(UserService userService, BookingService bookingService,AuthServiceImpl authService) {
         this.userService = userService;
         this.bookingService = bookingService;
+        this.authService = authService;
     }
 
     @PostMapping(value = "/save")
@@ -86,11 +96,32 @@ public class UserController {
         return ResponseEntity.ok(bookingHistory);
     }
 
-    @GetMapping("search")
+    @GetMapping("/search")
     public ResponseEntity<List<UserResponse>> searchUsers(@RequestParam(required = false) String name,
                                                           @RequestParam(required = false) String email){
         ResponseEntity<List<UserResponse>> users = userService.searchUsers(name, email);
         return users;
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<UserAuthResponse> registerUser(@Valid @RequestBody UserAuthRequest userRequest) {
+        return authService.registerUser(userRequest);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody UserLoginRequest request) {
+        return authService.loginUser(request);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String authorizationHeader) {
+        String accessToken = authorizationHeader.replace("Bearer ", "");
+        try {
+            authService.logout(accessToken);
+            return ResponseEntity.ok("{\"message\": \"Logout successful\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"error\": \"Logout failed: " + e.getMessage() + "\"}");
+        }
+    }
 }

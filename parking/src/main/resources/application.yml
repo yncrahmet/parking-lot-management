@@ -8,10 +8,10 @@ spring:
     import: "optional:configserver:http://localhost:8181"
 
   datasource:
-    url: jdbc:postgresql://localhost:5433/parking
+    url: jdbc:postgresql://localhost:5432/parking
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: 12345
+    password: postgres
 
   flyway:
     enabled: true
@@ -47,3 +47,12 @@ management:
         include: "*"
     health:
       show-details: always
+
+keycloak:
+  admin-url: "http://localhost:8080/admin/realms/microservice/users"
+  admin-client-id: "admin-cli"
+  token-url: "http://localhost:8080/realms/microservice/protocol/openid-connect/token"
+  app-client-id: "parking-app-client"
+  client-secret: "LSSG2CLjOiwjXwqxmMOsXbOj36PgAb1j"
+  admin-client-secret: "CFZLyL45WBpqcIOJJNuFrAGxucj2vVSv"
+  logout-url: "http://localhost:8080/realms/microservice/protocol/openid-connect/logout"

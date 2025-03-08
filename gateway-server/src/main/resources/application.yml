@@ -13,6 +13,11 @@ spring:
     admin:
           client:
             url: "http://localhost:8192"
+  security:
+    oauth2:
+      resourceserver:
+         jwt:
+           jwk-set-uri: "http://localhost:8080/realms/microservice/protocol/openid-connect/certs"
 logging:
   file:
     name: gateway-server.log
@@ -28,3 +33,5 @@ management:
   endpoint:
     gateway:
       access: read_only
+
+
