@@ -10,6 +10,7 @@ import com.parking.payment_service.model.Payment;
 import com.parking.payment_service.modelmapper.ModelMapperService;
 import com.parking.payment_service.repositories.PaymentRepository;
 import com.parking.payment_service.services.PaymentService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -55,7 +56,9 @@ public class PaymentServiceImpl implements PaymentService {
         return new ApiResponse<>(true, "Payment found.", paymentResponse);
     }
 
+
     @Override
+    @Scheduled(cron = "0 0 3 * * ?")
     public ApiResponse<List<PaymentResponse>> getAllPayments() {
         List<Payment> payments = paymentRepository.findAll();
         List<PaymentResponse> paymentResponse = payments.stream()

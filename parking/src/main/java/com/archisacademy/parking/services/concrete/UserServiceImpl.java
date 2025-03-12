@@ -12,6 +12,7 @@ import com.archisacademy.parking.repositories.UserRepository;
 import com.archisacademy.parking.services.abstracts.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,6 +43,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Scheduled(cron = "0 0 0 1/2 * ?")
     public List<UserResponse> getAllUsers() {
         List<User> users = userRepository.findAll();
         List<UserResponse> userResponses=users.stream().map(user ->modelMapperServiceImpl.response().map(user,UserResponse.class))

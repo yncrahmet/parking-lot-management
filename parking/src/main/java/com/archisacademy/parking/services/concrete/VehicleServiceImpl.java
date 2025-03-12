@@ -14,6 +14,7 @@ import com.archisacademy.parking.services.abstracts.VehicleService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -85,6 +86,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    @Scheduled(cron = "0 0 0 1/2 * ?")
     public ApiResponse<List<VehicleResponse>> getAll() {
         logger.info("Fetching all vehicles");
         List<Vehicle> vehicles = vehicleRepository.findAll();
