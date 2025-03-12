@@ -10,6 +10,7 @@ import com.archisacademy.parking.repositories.ParkingSpotRepository;
 import com.archisacademy.parking.repositories.UserRepository;
 import com.archisacademy.parking.services.abstracts.BookingService;
 import org.modelmapper.ModelMapper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class BookingServiceImpl implements BookingService {
         return response;
     }
 
-
+    @Scheduled(cron = "0 0 8 * * ?")
     @Override
     public List<BookingHistoryResponse> userBookings(Long id){
         List<Booking> bookings = bookingRepository.findByUserId(id);

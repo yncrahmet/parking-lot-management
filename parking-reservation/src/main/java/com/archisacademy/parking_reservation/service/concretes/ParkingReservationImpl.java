@@ -16,6 +16,7 @@ import com.archisacademy.parking_reservation.service.abstracts.ParkingReservatio
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -97,6 +98,7 @@ public class ParkingReservationImpl implements ParkingReservationService {
         return responses;
     }
 
+    @Scheduled(fixedRate = 86400000)
     private String getVehiclePriority(Long vehicleId) {
         ResponseEntity<String> vehiclePriorityResponse = vehicleFeignClient.getPriority(vehicleId);
         if (vehiclePriorityResponse.getBody() == null || !vehiclePriorityResponse.getStatusCode().is2xxSuccessful()) {
@@ -104,7 +106,7 @@ public class ParkingReservationImpl implements ParkingReservationService {
         }
         return vehiclePriorityResponse.getBody();
     }
-
+    @Scheduled(fixedRate = 86400000)
     private ParkingSpot getParkingSpot(Long parkingSpotId) {
         ResponseEntity<ParkingSpot> parkingSpotResponse = parkingSpotFeignClient.getParkingSpotById(parkingSpotId);
         if (parkingSpotResponse.getBody() == null || !parkingSpotResponse.getStatusCode().is2xxSuccessful()) {
