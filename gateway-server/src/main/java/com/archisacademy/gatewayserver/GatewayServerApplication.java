@@ -61,6 +61,14 @@ public class GatewayServerApplication {
 									setDuration(1);
 								}})))
 						.uri("lb://PARKING"))
+				.route(p -> p.path("/microservice/api/v1/payments/**")
+						.filters(f -> f.rewritePath("/microservice/api/v1/payments(?<segment>.*)", "/api/v1/payments${segment}")
+								.filter(new RateLimitGatewayFilterFactory().apply(new RateLimitGatewayFilterFactory.Config() {{
+									setLimit(10);
+									setDuration(1);
+								}})))
+						.uri("lb://STRIPE-SERVICE"))
 				.build();
+
 	}
 }
