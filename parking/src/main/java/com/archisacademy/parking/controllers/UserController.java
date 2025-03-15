@@ -1,13 +1,7 @@
 package com.archisacademy.parking.controllers;
 
-import com.archisacademy.parking.dtos.request.UserAuthRequest;
-import com.archisacademy.parking.dtos.request.UserLoginRequest;
-import com.archisacademy.parking.dtos.request.UserRequest;
-import com.archisacademy.parking.dtos.request.UserUpdateRequest;
-import com.archisacademy.parking.dtos.response.BookingHistoryResponse;
-import com.archisacademy.parking.dtos.response.UserAuthResponse;
-import com.archisacademy.parking.dtos.response.UserResponse;
-import com.archisacademy.parking.dtos.response.UserUpdateResponse;
+import com.archisacademy.parking.dtos.request.*;
+import com.archisacademy.parking.dtos.response.*;
 import com.archisacademy.parking.services.abstracts.BookingService;
 import com.archisacademy.parking.services.abstracts.UserService;
 import com.archisacademy.parking.services.concrete.AuthServiceImpl;
@@ -124,4 +118,11 @@ public class UserController {
                     .body("{\"error\": \"Logout failed: " + e.getMessage() + "\"}");
         }
     }
+
+    @PostMapping("/feedback")
+    public ResponseEntity<UserFeedbackResponse> sendFeedback(@RequestBody UserFeedbackRequest userFeedbackRequest) {
+        UserFeedbackResponse userFeedbackResponse = userService.sendFeedback(userFeedbackRequest);
+        return ResponseEntity.ok(userFeedbackResponse);
+    }
+
 }
