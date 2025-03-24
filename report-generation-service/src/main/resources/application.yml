@@ -30,7 +30,8 @@ spring:
 
 logging:
   file:
-   name: C:/Users/log/application.log
+    path: C:\log
+    name: report-generation-service.log
 
 eureka:
   client:

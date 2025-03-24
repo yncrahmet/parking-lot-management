@@ -50,7 +50,7 @@ spring:
 logging:
   file:
     path: C:\log
-    name: config-server.log
+    name: email-server.log
     max-history: 5
     max-size: 10MB
   level:

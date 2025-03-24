@@ -18,6 +18,7 @@ server:
         url: "http://localhost:8192"
 logging:
   file:
+    path: C:\log
     name: config-server.log
     max-history: 5
     max-size: 10MB

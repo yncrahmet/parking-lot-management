@@ -20,6 +20,7 @@ spring:
            jwk-set-uri: "http://localhost:8080/realms/microservice/protocol/openid-connect/certs"
 logging:
   file:
+    path: C:\log
     name: gateway-server.log
     max-history: 5
     max-size: 10MB
