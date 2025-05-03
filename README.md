@@ -1,4 +1,4 @@
-# 🅿️ ParkingLot Management 
+# ParkingLot Management 
 
 ParkingLot, mikroservis mimarisiyle geliştirilmiş bir **otopark rezervasyon sistemidir**.  
 Kullanıcılar mevcut otopark alanlarını görüntüleyebilir, rezervasyon yapabilir ve ödeme işlemlerini güvenli bir şekilde tamamlayabilir. Sistem, servisler arası iletişimde Kafka ve Feign Client gibi modern teknolojilerden faydalanır.
